@@ -1,17 +1,8 @@
 (ns cljmontecarlo.multiscale
 	(use clojure.math.combinatorics)
 	(require 
-		[clojure.math.numeric-tower :as math1] 
-		[clojure.contrib.generic.math-functions :as math2]
 		[clojure.contrib.generic.functor :as func]))
 
-
-;; x+y+x^2+y^2+3^sin(x^5+y^6)
-(defn ff [x y] (+ x y (* x x) (* y y) (math1/expt 3 (math2/sin (+ (math1/expt x 5) (math1/expt y 6))))))
-(defn simple [x y] (+ (* x x) (* y y)))
-
-
-(def limits [[-1.0 1.0] [-1.0 1.0]])
 
 (defn subdivide [l n] (let [newvars (for [[v1 v2] l] (let [step (/ (- v2 v1) n)] (for [i (range n)] [(+ v1 (* i step)) (+ v1 (* (inc i) step))])))]
 	(apply cartesian-product newvars)))
@@ -63,4 +54,3 @@
 				  best (first (first (filter (fn [[s v]] (= v max-val)) subdivisions)))]
 				(recur (dec index) best)))))
 
-;(mt ff limits 3 1 1 1000)

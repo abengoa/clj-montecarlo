@@ -28,7 +28,8 @@
 
 (defn summarize-area-points 
 	"Calculates a summary of all the points found in an area. Currently the metric used is the min function."
-	[p] (reduce min p))
+	[p] 
+	(reduce min p))
 
 ;; ---------- Montecarlo-related functions: iteration
 
@@ -41,7 +42,7 @@
 	"Calculates how many points should be generated for each area based on the current probabilities."
 	[l-probs n] 
 	(let [m (reduce + (map second l-probs))]
-		(reduce into {} (map (fn [[l p]] {l (int (* n (/ p m)))}) l-probs))))
+		(reduce into {} (map (fn [[l p]] {l (max 1 (int (* n (/ p m))))}) l-probs))))
 
 (defn step-all-areas 
 	"Generates points and summaries for each area."
@@ -55,7 +56,8 @@
 	[l-summaries]
 	(let [average (/ (reduce + (vals l-summaries)) (double (count (vals l-summaries))))
 		  dists (func/fmap #(- average %) l-summaries)
-		  m (reduce min (vals dists))
+		  ;m (reduce min (vals dists))
+		  m (first (vals dists))
 		  adjusted-dists (func/fmap #(inc (- % m)) dists)]
 		adjusted-dists))
 		

@@ -21,6 +21,7 @@
 (deftest montecarlo-multiscale
   (is true (let [[x y] (mc simple limits 3 10 1000 5)] (and (around? x 0) (around? y 0))))
   (is true (let [[x y] (mc complex limits 3 10 1000 5)] (and (around? x -1) (around? y -0.48))))
-  ;(is true (let [[a b c d e] (mc five-var-fn five-var-limits 5 10 10000 5)] (and (< x -0.99) (> x -1) (< y -0.47) (> y -0.49))))
+  (is true (let [[a b c d e] (mc five-var-fn five-var-limits 5 10 10000 5)] 
+	(and (around? a 22) (around? b 0.64) (around? c 0.42) (around? d -10) (around? e 1))))
   )
 	

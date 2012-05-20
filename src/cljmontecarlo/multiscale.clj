@@ -34,22 +34,22 @@
 		  adjusted-dists (func/fmap #(inc (- % m)) dists)]
 		adjusted-dists))
 		
-(defn mt-iteration [l-probs point-count fitness-fn]
+(defn mc-iteration [l-probs point-count fitness-fn]
 	(generate-new-probs (step-all-areas l-probs point-count fitness-fn)))
 		
 		
 
-(defn mt-level [fitness-fn lims subdivision-step point-count iteration-count]
+(defn mc-level [fitness-fn lims subdivision-step point-count iteration-count]
 	(loop [index iteration-count
 			l-probs (reduce into {} (map (fn [l] {l 1.0}) (subdivide lims subdivision-step)))]
 			(if (neg? index) l-probs
-				(recur (dec index) (mt-iteration l-probs point-count fitness-fn)))))
+				(recur (dec index) (mc-iteration l-probs point-count fitness-fn)))))
 
-(defn mt [fitness-fn lims subdivision-step subdivision-limit point-count iteration-count]
+(defn mc [fitness-fn lims subdivision-step subdivision-limit point-count iteration-count]
 	(loop [index subdivision-limit
 		   current-area lims]
 		(if (neg? index) (map (fn [[v1 v2]] (/ (+ v1 v2) 2)) current-area)
-			(let [subdivisions (mt-level fitness-fn current-area subdivision-step point-count iteration-count)
+			(let [subdivisions (mc-level fitness-fn current-area subdivision-step point-count iteration-count)
 				  max-val (reduce max (vals subdivisions))
 				  best (first (first (filter (fn [[s v]] (= v max-val)) subdivisions)))]
 				(recur (dec index) best)))))

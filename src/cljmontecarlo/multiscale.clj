@@ -13,7 +13,7 @@
 (for [i (range n)] (generate-random-point l)))
 
 
-;(defn summarize-area-points [p] (/ (reduce + p) (double (count p))))
+
 (defn summarize-area-points [p] (reduce min p))
 
 

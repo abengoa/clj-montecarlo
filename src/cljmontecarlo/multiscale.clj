@@ -1,4 +1,5 @@
 (ns cljmontecarlo.multiscale
+	"A multiscale Montecarlo method for minimizing multivariable functions."
 	(use clojure.math.combinatorics)
 	(require 
 		[clojure.contrib.generic.functor :as func]))
